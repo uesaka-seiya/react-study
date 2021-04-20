@@ -15,7 +15,16 @@ npx create-react-app prj-name --template typescript
 * ダウンロード実行の場合は実行後そのコマンドのパッケージをきれいに削除してくれる
 
 ### `yarn lint`
-* ESLint に怒られる
+ESLint に怒られる
 
 ### `yarn lint:fix`
-* ESLint による自動補完
+ESLint による自動補完
+
+### `yarn format`
+Prettier が整形してくれる
+
+### `yarn run fix`
+Prettier と ESLint が修正してくれる
+
+### `yarn lint:conflict`
+Prettier と ESLint の競合を確認できる
