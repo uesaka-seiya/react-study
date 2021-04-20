@@ -80,7 +80,7 @@ npmパッケージが依存しているものはnpm公式や下記コマンド�
 
 ESlint の組み込みルールについては [List of available rules - ESLint](https://eslint.org/docs/rules/) を参照
 
-VS Code 拡張の ESLint をインストールしてから Settings.json に追記
+### VS Code 拡張の ESLint をインストールしてから Settings.json に追記
 ```
 <!-- ファイル保存時に VS Code 内臓のものではなく ESLint の自動整形が走るようにする -->
   "editor.codeActionsOnsave": {
@@ -109,3 +109,47 @@ VS Code 拡張の ESLint をインストールしてから Settings.json に追�
 ### lint実行してみて失敗したとき
 * 必要なパッケージをインストールする `yarn add package-name@latest`
 * バージョン上げる `yarn upgrade-interactive --latest`
+
+## Prettier の環境を作る
+ESLint とバッティングしないよう調整が必要
+### インストール
+* prettier: prettier本体
+* eslint-config-prettier: prettierと競合する可能性のある ESLint の各種ルールを無効化する共有設定
+```
+❯ yarn add -D prettier eslint-config-prettier
+❯ (typesync)  // package.json に指定してたら自動で typesync する
+❯ yarn
+```
+### 各種設定
+* `.eslintrc.js` の extends 最下行に "prettier" を追加（ルール上書きのため順番大事に）
+* `.prettierrc` を作成
+
+### 衝突ルールがないか確認
+```
+❯ npx eslint-config-prettier 'src/**/*.{js,jsx,ts,tsx}'
+No rules that are unnecessary or conflict with Prettier were found.
+```
+
+### VS Code に Prettier 拡張をインストールして Settings.json に追記
+```
+"editor.defaultFormatter": "esbenp.prettier-vscode",  // 拡張をデフォルトフォーマッタに
+// 拡張子ごとに 保存と同時に整形 を定義
+"[graphql]": {
+"editor.formatOnSave": true
+},
+"[javascript]": {
+"editor.formatOnSave": true
+},
+"[javascriptreact]": {
+"editor.formatOnSave": true
+},
+"[json]": {
+"editor.formatOnSave": true
+},
+"[typescript]": {
+"editor.formatOnSave": true
+},
+"[typescriptreact]": {
+"editor.formatOnSave": true
+},
+```

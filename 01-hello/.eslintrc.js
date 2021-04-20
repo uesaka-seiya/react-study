@@ -16,6 +16,7 @@ module.exports = {
         "plugin:import/typescript",
         "plugin:@typescript-eslint/recommended",
         "plugin:@typescript-eslint/recommended-requiring-type-checking",
+        "prettier"
     ],
     // パーサ: ソースコードを特定の言語仕様に沿って解析してくれるライブラリ
     "parser": "@typescript-eslint/parser",
@@ -26,7 +27,7 @@ module.exports = {
         "ecmaVersion": 12,
         "project": "./tsconfig.eslint.json",  // パーサにわたすオプションを定義
         "sourceType": "module",
-        "tsconfigRootir": __dirname,
+        "tsconfigRootir": "__dirname",
     },
     // ESlint の組み込みルール以外に独自のルールを追加するもの
     // 推奨の共有設定とパッケージングして提供されることが多い
