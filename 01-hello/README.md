@@ -97,9 +97,9 @@ VS Code 拡張の ESLint をインストールしてから Settings.json に追�
 
 #### lint の無効化コメント
 ##### 一時的に無効化したいとき
-開始: `* eslint-disable react/jsx-one-expression-per-line */`
+開始: `/* eslint-disable react/jsx-one-expression-per-line */`
 
-終了: `* eslint-enable react/jsx-one-expression-per-line */`
+終了: `/* eslint-enable react/jsx-one-expression-per-line */`
 
 ##### 1行だけ無効化したいとき
 該当する行にコメントとして: `// eslint-disable-line`
