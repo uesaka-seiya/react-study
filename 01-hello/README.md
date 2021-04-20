@@ -1,46 +1,111 @@
-# Getting Started with Create React App
+# 6-1 Eslint
+## Eslintの環境をつくる
+### パッケージの最新化
+`yarn upgrade-interactive --latest`
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+yarn upgrade コマンドのアップグレードの対象から TypeScript が外されたため、別途アップグレードを実行
 
-## Available Scripts
+`yarn add typescript@latest`
 
-In the project directory, you can run:
+### eslint設定ファイルを作成
+`yarn eslint --init` で対話的に作成
+```
+❯ yarn eslint --init
+? How would you like to use ESLint? 
+✔ To check syntax, find problems, and enforce code style
 
-### `yarn start`
+? What type of modules does your project use?
+✔ JavaScript modules (import/export)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+? Which framework does your project use?
+✔ React
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+? Does your project use TypeScript?
+✔ Yes
 
-### `yarn test`
+? Where does your code run?
+✔ Browser
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+? How would you like to define a style for your project?
+✔ Use a popular style guide
 
-### `yarn build`
+? Which style guide do you want to follow?
+✔ Airbnb: https://github.com/airbnb/javascript
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+? What format do you want your config file to be in?
+✔ JavaScript
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Checking peerDependencies of eslint-config-airbnb@latest
+The config that you've selected requires the following dependencies:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+eslint-plugin-react@^7.21.5 @typescript-eslint/eslint-plugin@latest eslint-config-airbnb@latest eslint@^5.16.0 || ^6.8.0 || ^7.2.0 eslint-plugin-import@^2.22.1 eslint-plugin-jsx-a11y@^6.4.1 eslint-plugin-react-hooks@^4 || ^3 || ^2.3.0 || ^1.7.0 @typescript-eslint/parser@latest
 
-### `yarn eject`
+? Would you like to install them now with npm?
+✔ No // パッケージ管理をYarnで統一するため後で改めてインストールする
+```
+コマンドがエラーで終わった（`Oops! Something went wrong! :(`）が、とりあえず気にしない
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+init でインストールしなかった拡張ルールセットとプラグインをインストール
+```
+❯ yarn add -D eslint-plugin-react@^7.21.5 @typescript-eslint/eslint-plugin@latest eslint-config-airbnb@latest eslint@^5.16.0 || ^6.8.0 || ^7.2.0 eslint-plugin-import@^2.22.1 eslint-plugin-jsx-a11y@^6.4.1 eslint-plugin-react-hooks@^4 || ^3 || ^2.3.0 || ^1.7.0 @typescript-eslint/parser@latest
+❯ typesync
+❯ yarn
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### ESlint の運用ルールをカスタマイズする
+#### 今回は eslint-config-airbnb
+* Airbnb JavaScript Style Guide に準拠する ESlintの共有設定
+* サードパーティ提供としてはメジャー
+* かなり厳格なルールが適用されているので嫌がる開発者も多い
+* 最初から導入しておけば障壁も少ない
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+既存のプロジェクト追加する場合は依存するパッケージも含め下記のようにインストール
+```
+yarn add -D eslint-config-airbnb eslint-plugin-import \ eslint-plugin-jsx-a11y eslint-plugin-react-hooks
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+npmパッケージが依存しているものはnpm公式や下記コマンドで確認して `.eslintrc.js`の`extends`に追記
+```
+❯ npm info eslint-config-airbnb peerDependencies
+ 
+{
+  eslint: '^5.16.0 || ^6.8.0 || ^7.2.0',
+  'eslint-plugin-import': '^2.22.1',
+  'eslint-plugin-jsx-a11y': '^6.4.1',
+  'eslint-plugin-react': '^7.21.5',
+  'eslint-plugin-react-hooks': '^4 || ^3 || ^2.3.0 || ^1.7.0'
+}
+```
 
-## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+ESlint の組み込みルールについては [List of available rules - ESLint](https://eslint.org/docs/rules/) を参照
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+VS Code 拡張の ESLint をインストールしてから Settings.json に追記
+```
+<!-- ファイル保存時に VS Code 内臓のものではなく ESLint の自動整形が走るようにする -->
+  "editor.codeActionsOnsave": {
+    "source.fixAll.eslint": true
+  },
+  "editor.formatOnSave": false,
+  "eslint.packageManager": "yarn",
+<!-- プロジェクトを開いたときそこに TypeScript がインストールされていた場合、
+内蔵のものとどちらを使うかを VS Code に尋ねさせるかどうか（内蔵はバージョンが古め） -->
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+<!-- 最初から強制的にプロジェクト側の TypeScript を使わせたい場合 -->
+  "typescript.tsdk": "./node_modules/typescript/lib",
+```
+
+#### lint の無効化コメント
+##### 一時的に無効化したいとき
+開始: `* eslint-disable react/jsx-one-expression-per-line */`
+
+終了: `* eslint-enable react/jsx-one-expression-per-line */`
+
+##### 1行だけ無効化したいとき
+該当する行にコメントとして: `// eslint-disable-line`
+
+該当行の直前の行に: `// eslint-disable-next-line`
+
+### lint実行してみて失敗したとき
+* 必要なパッケージをインストールする `yarn add package-name@latest`
+* バージョン上げる `yarn upgrade-interactive --latest`
