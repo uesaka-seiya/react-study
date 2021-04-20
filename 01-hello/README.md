@@ -2,7 +2,9 @@
 ## Eslintの環境をつくる
 ### パッケージの最新化
 `yarn upgrade-interactive --latest`
+
 yarn upgrade コマンドのアップグレードの対象から TypeScript が外されたため、別途アップグレードを実行
+
 `yarn add typescript@latest`
 
 ### eslint設定ファイルを作成
@@ -49,3 +51,62 @@ init でインストールしなかった拡張ルールセットとプラグイ
 ❯ typesync
 ❯ yarn
 ```
+
+### ESlint の運用ルールをカスタマイズする
+#### 今回は eslint-config-airbnb
+* Airbnb JavaScript Style Guide に準拠する ESlintの共有設定
+* サードパーティ提供としてはメジャー
+* かなり厳格なルールが適用されているので嫌がる開発者も多い
+* 最初から導入しておけば障壁も少ない
+
+既存のプロジェクト追加する場合は依存するパッケージも含め下記のようにインストール
+```
+yarn add -D eslint-config-airbnb eslint-plugin-import \ eslint-plugin-jsx-a11y eslint-plugin-react-hooks
+```
+
+npmパッケージが依存しているものはnpm公式や下記コマンドで確認して `.eslintrc.js`の`extends`に追記
+```
+❯ npm info eslint-config-airbnb peerDependencies
+ 
+{
+  eslint: '^5.16.0 || ^6.8.0 || ^7.2.0',
+  'eslint-plugin-import': '^2.22.1',
+  'eslint-plugin-jsx-a11y': '^6.4.1',
+  'eslint-plugin-react': '^7.21.5',
+  'eslint-plugin-react-hooks': '^4 || ^3 || ^2.3.0 || ^1.7.0'
+}
+```
+
+
+ESlint の組み込みルールについては [List of available rules - ESLint](https://eslint.org/docs/rules/) を参照
+
+VS Code 拡張の ESLint をインストールしてから Settings.json に追記
+```
+<!-- ファイル保存時に VS Code 内臓のものではなく ESLint の自動整形が走るようにする -->
+  "editor.codeActionsOnsave": {
+    "source.fixAll.eslint": true
+  },
+  "editor.formatOnSave": false,
+  "eslint.packageManager": "yarn",
+<!-- プロジェクトを開いたときそこに TypeScript がインストールされていた場合、
+内蔵のものとどちらを使うかを VS Code に尋ねさせるかどうか（内蔵はバージョンが古め） -->
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+<!-- 最初から強制的にプロジェクト側の TypeScript を使わせたい場合 -->
+  "typescript.tsdk": "./node_modules/typescript/lib",
+```
+
+#### lint の無効化コメント
+一時的に無効化したいとき
+開始
+`* eslint-disable react/jsx-one-expression-per-line */`
+
+終了
+`* eslint-enable react/jsx-one-expression-per-line */`
+
+1行だけ無効化したいとき
+
+該当する行にコメントとして↓
+`// eslint-disable-line`
+
+該当行の直前の行に↓
+`// eslint-disable-next-line`
