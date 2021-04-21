@@ -81,18 +81,20 @@ npmパッケージが依存しているものはnpm公式や下記コマンド�
 ESlint の組み込みルールについては [List of available rules - ESLint](https://eslint.org/docs/rules/) を参照
 
 ### VS Code 拡張の ESLint をインストールしてから Settings.json に追記
-```
-<!-- ファイル保存時に VS Code 内臓のものではなく ESLint の自動整形が走るようにする -->
+```json
+{
+// ファイル保存時に VS Code 内臓のものではなく ESLint の自動整形が走るようにする
   "editor.codeActionsOnsave": {
     "source.fixAll.eslint": true
   },
   "editor.formatOnSave": false,
   "eslint.packageManager": "yarn",
-<!-- プロジェクトを開いたときそこに TypeScript がインストールされていた場合、
-内蔵のものとどちらを使うかを VS Code に尋ねさせるかどうか（内蔵はバージョンが古め） -->
+// プロジェクトを開いたときそこに TypeScript がインストールされていた場合
+// 内蔵のものとどちらを使うかを VS Code に尋ねさせるかどうか（内蔵はバージョンが古め）
   "typescript.enablePromptUseWorkspaceTsdk": true,
-<!-- 最初から強制的にプロジェクト側の TypeScript を使わせたい場合 -->
+// 最初から強制的にプロジェクト側の TypeScript を使わせたい場合
   "typescript.tsdk": "./node_modules/typescript/lib",
+}
 ```
 
 #### lint の無効化コメント
@@ -131,7 +133,7 @@ No rules that are unnecessary or conflict with Prettier were found.
 ```
 
 ### VS Code に Prettier 拡張をインストールして Settings.json に追記
-```
+```json
 "editor.defaultFormatter": "esbenp.prettier-vscode",  // 拡張をデフォルトフォーマッタに
 // 拡張子ごとに 保存と同時に整形 を定義
 "[graphql]": {
@@ -152,4 +154,33 @@ No rules that are unnecessary or conflict with Prettier were found.
 "[typescriptreact]": {
 "editor.formatOnSave": true
 },
+```
+
+## stylelint
+### install
+* [stylelint](https://stylelint.io): CSS 用のlinter. stylelint本体.
+* [styleliny-config-standard](https://github.com/stylelint/stylelint-config-standard): stylelint公式による標準の共有設定
+* [stylelint-order](https://github.com/hudochenkov/stylelint-order): stylelintの並び順に関するルールセットのプラグイン
+* [stylelint-config-recess-order](https://github.com/stormwarning/stylelint-config-recess-order): RECESSにもとづく CSS の並べ替えのための共有設定
+(RCESS(リセス): Twitter社が提供してたCSSのコード品ツール)
+```
+❯ yarn add -D stylelint stylelint-config-standard stylelint-order stylelint-config-recess-order
+❯ (typesync)
+❯ yarn
+```
+
+### 設定ファイル作成
+`.stylelintrc.js`を作成
+
+### VS Code 拡張を入れて Settings.json に追加
+```json
+{
++  "css.validate": false,
++  "less.validate": false,
++  "scss.validate": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true,
++   "source.fixAll.stylelint": true
+  },
+  "editor.formatOnSave": false,
 ```

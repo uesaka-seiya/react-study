@@ -14,17 +14,11 @@ npx create-react-app prj-name --template typescript
 * 該当パッケージがマシンにインストールされていればそれを, なければ最新版をダウンロードしてきて実行する
 * ダウンロード実行の場合は実行後そのコマンドのパッケージをきれいに削除してくれる
 
-### `yarn lint`
-ESLint に怒られる
+### `yarn fix`
+Prettier と ESLint と stylelint による自動補完
 
 ### `yarn lint:fix`
-ESLint による自動補完
-
-### `yarn format`
-Prettier が整形してくれる
-
-### `yarn run fix`
-Prettier と ESLint が修正してくれる
+ESLint と stylelint による自動補完
 
 ### `yarn lint:conflict`
 Prettier と ESLint の競合を確認できる
