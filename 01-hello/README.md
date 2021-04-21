@@ -184,3 +184,19 @@ No rules that are unnecessary or conflict with Prettier were found.
   },
   "editor.formatOnSave": false,
 ```
+
+## その他プラグイン
+今回はアロー関数に統一するプラグイン: eslint-plugin-prefer-arrow を追加する
+### インストール
+```
+yarn -D add eslint-plugin-prefer-arrow
+```
+
+### 設定ファイルに追記
+`.eslintrc.json` 差分参照
+
+### 秘伝のタレにならないように
+
+linter 本体やプラグインが提供してる共有設定や eslint-config-airbnb などは、バージョン更新で下方互換性のない変更をけっこう入れてくる。パッケージをバージョン更新したら新ルールが追加・適用されてたり、これまであったルールが非推奨になってたりなんてことがよくあるので随時見直す必要がある。
+
+不要な拡張ルールセットやプラグインは導入せず、カスタマイズは最小限にとどめて、常に自分が中身を把握しておけるよう設定はできるだけシンプルにしておくこと。
