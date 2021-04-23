@@ -200,3 +200,67 @@ yarn -D add eslint-plugin-prefer-arrow
 linter 本体やプラグインが提供してる共有設定や eslint-config-airbnb などは、バージョン更新で下方互換性のない変更をけっこう入れてくる。パッケージをバージョン更新したら新ルールが追加・適用されてたり、これまであったルールが非推奨になってたりなんてことがよくあるので随時見直す必要がある。
 
 不要な拡張ルールセットやプラグインは導入せず、カスタマイズは最小限にとどめて、常に自分が中身を把握しておけるよう設定はできるだけシンプルにしておくこと。
+
+### Git リポジトリへコミットしたときにすべての lint チェックが走るようにする
+git commit のときに各種構文チェックと整形が走って、残ったエラーがなければそのままコミットできるようにする
+
+* simple-git-hooks: 特定のアクションが発生したときに任意のスクリプトを走らせるしくみ（Git Hooks）を管理する
+* lint-staged:  Git のステージング領域にあるファイルに対して lint チェックを走らせるためのツール
+```
+ yarn add -D simple-git-hooks lint-staged
+ ```
+ ### package.json に追記
+```
+  ︙
+  "scripts": {
+  ︙
+  "lint:style:fix": "stylelint --fix 'src/**/*.{css,less,sass,scss}'",
+  "preinstall": "typesync || :",
++ "prepare": "simple-git-hooks > /dev/null"
+  },
+  ︙
+  "devDependencies": {
+  ︙
+  "stylelint-config-standard": "^21.0.0",
+  "stylelint-order": "^4.1.0"
+  },
++ "simple-git-hooks": {
++   "pre-commit": "npx lint-staged" // Monorepoじゃない限りこれでOK
++ },
++ "lint-staged": {
++   "src/**/*.{js,jsx,ts,tsx}": [
++     "prettier --write --loglevel=error",
++     "eslint --fix --quiet"
++   ],
++   "src/**/*.{css,less,sass,scss}": [
++     "stylelint --fix --quiet"
++   ],
++   "{public,src}/**/*.{html,gql,graphql,json}": [
++     "prettier --write --loglevel=error"
++   ]
++ }
+}
+```
+### コマンドを実行
+```
+❯ npx simple-git-hooks
+[INFO] Successfully set the pre-commit with command: npx lint-staged
+[INFO] Successfully set all git hooks
+```
+
+### 解説
+Git Hooks は Git リポジトリルート配下の `.git/hooks/` というディレクトリにある、各アクション名に対応したスクリプトファイルを実行する。
+`simple-git-hooks` コマンドは、`package.json` の "simple-git-hooks" エントリから対応するものを抽出して、該当するファイルに書き出してくれる。
+この例だと `.git/hooks/pre-commit` というファイルが作られ、その中に `npx lint-staged` のコマンドが書き込まれる。
+
+### Monorepo のとき
+このままだと Git アクション時にリポジトリルートの `.git/hooks/` 配下のスクリプトが実行され、ルートで `npx lint-staged` を実行しようとして、そんなコマンドはないと怒られる。
+リポジトリの中で JSX とかの任意の種類のファイルに変更があったプロジェクトを抽出して、そのディレクトリでコマンドを実行してくれるシェルスクリプトを自分で書くしかない。(root 直下 `lint-staged-around` 参照)
+これを使う場合、`package.json` の該当エントリはこうなる
+```
+"simple-git-hooks": {
+"pre-commit": ". ./lint-staged-around",
+"pre-push": ". ./test-around"  // 今回は割愛
+},
+```
+`test-around`は任意のプロジェクトのテストをプッシュ前に全実行するスクリプト
