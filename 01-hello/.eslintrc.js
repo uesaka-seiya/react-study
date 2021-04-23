@@ -36,6 +36,7 @@ module.exports = {
         "@typescript-eslint",
         "import",
         "jsx-a11y",
+        "prefer-arrow",
         "react",
         "react-hooks",
     ],
@@ -108,6 +109,14 @@ module.exports = {
         ],
         // JSX 記述を使用する場合に react モジュールを React としてインポートすることを強制
         "react/react-in-jsx-scope": "off",  // 新しいJSX変換形式ではインポート不要になるためOFF
+        "prefer-arrow/prefer-arrow-functions": [
+            "error",
+            {
+                disallowPrototype: true,
+                singleReturnOnly: false,
+                classPropertiesAllowed: false,
+            },
+            ],
     },
     "overrides": [ // 任意の glob パターンにマッチするファイルのみルールの適用を上書きできる
         {

@@ -17,8 +17,5 @@ npx create-react-app prj-name --template typescript
 ### `yarn fix`
 Prettier と ESLint と stylelint による自動補完
 
-### `yarn lint:fix`
-ESLint と stylelint による自動補完
-
 ### `yarn lint:conflict`
 Prettier と ESLint の競合を確認できる

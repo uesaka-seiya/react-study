@@ -1,0 +1,18 @@
+#!/bin/sh
+
+# test-around
+#   execute each test in sub-directories projects recursively
+#
+#   Riakuto! Project by Klemiwary Books
+
+targetProjects=(
+  "01-hello"
+)
+
+# execute each test
+rootDir=$(pwd | sed -r "s/\/\.git\/hooks//")
+
+for project in ${targetProjects[@]}; do
+  cd "$rootDir/$project"
+  CI=true npm test
+done
