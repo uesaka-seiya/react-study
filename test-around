@@ -6,7 +6,9 @@
 #   Riakuto! Project by Klemiwary Books
 
 targetProjects=(
-  "01-hello"
+  "01-hello",
+  "02-jest",
+  "03-saga-test"
 )
 
 # execute each test
