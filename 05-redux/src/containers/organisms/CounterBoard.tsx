@@ -6,6 +6,7 @@ import { CounterState } from 'reducer';
 import CounterBoard from 'components/organisms/CounterBoard';
 
 const EnhancedCounterBoard: FC = () => {
+  // stateを受け取り、そこから必要な値(count)を抜き出すための関数(state) => state.countを引数にとる
   const count = useSelector<CounterState, number>((state) => state.count);
   const dispatch = useDispatch();
 

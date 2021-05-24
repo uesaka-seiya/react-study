@@ -1,5 +1,5 @@
 import { Reducer } from 'redux';
-import { CounterAction, CounterActionType as Type } from 'actions';
+import { CounterAction, CounterActionType as Type } from './actions';
 
 export type CounterState = { count: number };
 export const initialState: CounterState = { count: 0 };
@@ -25,7 +25,8 @@ export const counterReducer: Reducer<CounterState, CounterAction> = (
         count: state.count + 1,
       };
     default: {
-      const _: never = action.type;
+      // eslint-disable-next-line
+      const _: never = action.type; // neverを使ってcaseの漏れを防止(ref.ch4.2)
 
       return state;
     }

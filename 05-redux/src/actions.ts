@@ -4,8 +4,8 @@ export const CounterActionType = {
   INCREMENT: 'INCREMENT',
 } as const; // アサーション構文（stringにしない）
 
+// オブジェクトから値の型を抽出して共用体型にするための自前ユーティリティ型(4.5 型表現に使われる演算子参照)
 type ValueOf<T> = T[keyof T];
-
 export type CounterAction = {
   type: ValueOf<typeof CounterActionType>;
   amount?: number;
