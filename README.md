@@ -1,4 +1,5 @@
 # React の自己学習をするリポジトリ
+> 参考: 大岡由佳 りあクト！ TypeScriptで始めるつらくないReact開発 第3.1版 
 ### Create React App (npx経由) で プロジェクト作成
 ```
 npx create-react-app prj-name --template typescript
