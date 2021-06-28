@@ -1,15 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createStore } from 'redux';
+import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 
-import { counterReducer, initialState } from './features/counter/counter-reducer';
+import { counterSlice } from 'features/counter';
+
 import reportWebVitals from './reportWebVitals';
 import App from './App';
 import 'semantic-ui-css/semantic.min.css';
 import './index.css';
 
-const store = createStore(counterReducer, initialState);
+const store = configureStore({reducer: counterSlice.reducer})
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
