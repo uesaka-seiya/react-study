@@ -2,13 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import { counterReducer, initialState } from './reducer';
+
+import { counterReducer, initialState } from './features/counter/counter-reducer';
 import reportWebVitals from './reportWebVitals';
 import App from './App';
 import 'semantic-ui-css/semantic.min.css';
 import './index.css';
 
-// store を初期化し Provider に propsとして渡す
 const store = createStore(counterReducer, initialState);
 ReactDOM.render(
   <React.StrictMode>

@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { useSelector } from 'react-redux';
 
 import ColorfulBeads from 'components/molecules/ColorfulBeads';
-import { CounterState } from 'reducer';
+import { CounterState } from 'features/counter/counter-reducer';
 
 const EnhancedColorfulBeads: FC<{ count?: number }> = () => {
   const count = useSelector<CounterState, number>((state) => state.count);
