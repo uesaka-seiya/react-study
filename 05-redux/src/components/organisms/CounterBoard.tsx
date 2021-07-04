@@ -1,16 +1,16 @@
-import { FC } from 'react';
+import { VFC } from 'react';
 import { Button, Card, Statistic } from 'semantic-ui-react';
 import './CounterBoard.css';
 
 const BULK_UNIT = 10;
-type Props = {
+export type CounterBoardProps = {
   count?: number;
   add?: (amount: number) => void;
   decrement?: () => void;
   increment?: () => void;
 };
 
-const CounterBoard: FC<Props> = ({
+const CounterBoard: VFC<CounterBoardProps> = ({
   count = 0,
   add = () => undefined,
   decrement = () => undefined,
