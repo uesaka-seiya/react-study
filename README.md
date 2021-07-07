@@ -50,7 +50,7 @@ Branch name for "next release" development: [develop]
 How to name your supporting branch prefixes?
 Feature branches? [feature/] ch
 Bugfix branches? [bugfix/] 
-Release branches? [release/] 
+Release branches? [release/] release/v
 Hotfix branches? [hotfix/] 
 Support branches? [support/] 
 Version tag prefix? [] v
@@ -104,5 +104,25 @@ git push origin ch00/add_template
 ```
 git flow feature publish 00/add_template
 ```
-* PR のマージ先は必ず develop にする（2回目）
-### 運用フロー pull --rebase で conflict を起こしたい
+* PR のマージ先は必ず develop にする（大事なことなので2回言いました）
+### 4. PR(feature)をdevelopにmergeしてdevelopから release ブランチを切る
+```
+git flow release start <branch name(version no)> [BASE]
+```
+[BASE]はオプションで 'develop'ブランチの特定のCommitのハッシュ値を指定します。指定がない場合はHEADが使われます。
+```
+git checkout develop
+git checkout -b release/v0.7.3
+```
+でもいいと思う。
+このreleaseブランチで package.jsonなど version: n.n.n を更新してコミット
+```
+git add ./package.json
+git commit -m "Update version `v0.7.3`
+```
+### 5. release ブランチを master にマージ（リリース）
+releaseはdevelopとmasterにマージされ、masterへのマージコミットにはタグの設定もある。
+developへのマージコミットにはリリースタグ用コメント `Merge tag 'ver1.2' into develop`がデフォになる。
+```
+git flow release finish v0.7.3
+```
