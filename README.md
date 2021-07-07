@@ -77,12 +77,18 @@ Now, start committing on your feature. When done, use:
 git checkout develop
 git checkout -b ch00/add_template
 ```
-のほうが慣れてる気がする。
+のほうが慣れてる気がする。  
 とりあえず
 * develop をベースに新規開発ブランチを作成する(pushする前ならrebaseでもいい)
 * 新規開発ブランチ名の先頭はfeature/(ここではchxx/)にする
 * PR のマージ先は必ず develop にする
-を守れば良い気がする。
+を守れば良い気がする。  
+
+`git flow feature start` でつくったブランチもベースは **origin** ではなく **local** の develop となる  
+のでPRつくるときに **マージ先をdevelop** にしてみて  
+「 Can’t automatically merge.」(origin/developと競合してる状態）だったら  
+ローカルで pull(fetch + merge)/pull --rebase(fetch + rebase) origin develop してpush( -f)する。
+
 ### 2. 開発してコミットする
 ```
 git status
